@@ -184,11 +184,11 @@ jobs:
       - run: pipenv install
         working-directory: ./wasm/tests
       - uses: actions/setup-node@v1
-      - name: run test
+      - name: build demo
         run: |
           export PATH=$PATH:`pwd`/../../geckodriver
           npm install
-          npm run test
+          npm run dist
         working-directory: ./wasm/demo
       - name: build notebook demo
         run: |
