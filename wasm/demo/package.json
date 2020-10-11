@@ -6,6 +6,7 @@
     "dependencies": {
         "codemirror": "^5.42.0",
         "local-echo": "^0.2.0",
+        "normalize.css": "^8.0.1",
         "xterm": "^3.8.0"
     },
     "devDependencies": {

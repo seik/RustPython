@@ -1,11 +1,11 @@
-import './style.css';
-import 'xterm/lib/xterm.css';
-import CodeMirror from 'codemirror';
-import 'codemirror/mode/python/python';
 import 'codemirror/addon/comment/comment';
 import 'codemirror/lib/codemirror.css';
-import { Terminal } from 'xterm';
+import 'codemirror/mode/python/python';
 import LocalEchoController from 'local-echo';
+import 'normalize.css';
+import { Terminal } from 'xterm';
+import 'xterm/lib/xterm.css';
+import './style.css';
 
 let rp;
 
@@ -22,53 +22,6 @@ import('rustpython')
         document.getElementById('error').textContent = e;
     });
 
-const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-    extraKeys: {
-        'Ctrl-Enter': runCodeFromTextarea,
-        'Cmd-Enter': runCodeFromTextarea,
-        'Shift-Tab': 'indentLess',
-        'Ctrl-/': 'toggleComment',
-        'Cmd-/': 'toggleComment',
-        Tab: editor => {
-            var spaces = Array(editor.getOption('indentUnit') + 1).join(' ');
-            editor.replaceSelection(spaces);
-        }
-    },
-    lineNumbers: true,
-    mode: 'text/x-python',
-    indentUnit: 4,
-    autofocus: true
-});
-
-const consoleElement = document.getElementById('console');
-const errorElement = document.getElementById('error');
-
-function runCodeFromTextarea() {
-    // Clean the console and errors
-    consoleElement.value = '';
-    errorElement.textContent = '';
-
-    const code = editor.getValue();
-    try {
-        rp.pyExec(code, {
-            stdout: output => {
-                const shouldScroll =
-                    consoleElement.scrollHeight - consoleElement.scrollTop ===
-                    consoleElement.clientHeight;
-                consoleElement.value += output;
-                if (shouldScroll) {
-                    consoleElement.scrollTop = consoleElement.scrollHeight;
-                }
-            }
-        });
-    } catch (err) {
-        if (err instanceof WebAssembly.RuntimeError) {
-            err = window.__RUSTPYTHON_ERROR || err;
-        }
-        errorElement.textContent = err;
-        console.error(err);
-    }
-}
 
 const snippets = document.getElementById('snippets');
 
